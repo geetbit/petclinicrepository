@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.samples.petclinic.model.Appointment;
 
-public class AppointmentSlot {
+public class AppointmentSlot implements Comparable{
 
 	private int slot;
 	private Appointment appointment;
@@ -28,20 +28,41 @@ public class AppointmentSlot {
 	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
-	
 	@Override
-	public boolean equals(Object o) {
-		if (! (o instanceof AppointmentSlot))
-			return false;
-		if (slot == ((AppointmentSlot)o).slot)
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((appointment == null) ? 0 : appointment.hashCode());
+		result = prime * result + (isAvailable ? 1231 : 1237);
+		result = prime * result + slot;
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		
-		return false;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AppointmentSlot other = (AppointmentSlot) obj;
+		if (appointment == null) {
+			if (other.appointment != null)
+				return false;
+		} else if (!appointment.equals(other.appointment))
+			return false;
+		if (isAvailable != other.isAvailable)
+			return false;
+		if (slot != other.slot)
+			return false;
+		return true;
 	}
 	
+	
 	@Override
-	public int hashCode(){
-		return slot;
+	public int compareTo(Object o) {
+		AppointmentSlot obj= (AppointmentSlot)o;
+		return this.slot - obj.slot;
 	}
 	
 	
